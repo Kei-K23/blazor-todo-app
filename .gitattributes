@@ -1,10 +1,1 @@
-* text=auto eol=lf
-
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.razor diff=php
-
-/.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+Components/** linguist-documentation=false
