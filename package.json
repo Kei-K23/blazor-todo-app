@@ -1,0 +1,17 @@
+{
+  "name": "BlazorTodoApp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "style": "npx tailwindcss -i wwwroot/app.css -o wwwroot/app.min.css --watch"
+  },
+  "keywords": [],
+  "author": "Kei-K23",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10"
+  }
+}
