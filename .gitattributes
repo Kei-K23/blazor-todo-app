@@ -3,7 +3,7 @@
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
-*.razor diff=csharp
+*.razor diff=php
 
 /.github export-ignore
 CHANGELOG.md export-ignore
