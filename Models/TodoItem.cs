@@ -3,9 +3,9 @@ namespace BlazorTodoApp.Models
     public class TodoItem
     {
         public int Id { get; set; }
-        public required string Title { get; set; }
-        public required string Description { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public string? Title { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
+        public bool IsCompleted { get; set; } = false;
         public DateTime DueDate { get; set; }
     }
 }

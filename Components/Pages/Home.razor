@@ -1,7 +1,67 @@
-﻿@page "/"
+﻿@using BlazorTodoApp.Models
+@using BlazorTodoApp.Services
+
+@page "/"
+@inject TodoService TodoService
 
 <PageTitle>Home</PageTitle>
 
 <div>
-    <h1>Hello</h1>
-</div>
+    <h1>Blazor Todo App</h1>
+    <EditForm Model="@newTodo">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div>
+            <label for="title">Title</label>
+            <InputText id="title" @bind-Value="newTodo.Title"/>
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <InputTextArea id="description" @bind-Value="newTodo.Description"/>
+        </div>
+        <div>
+            <label for="dueDate">Due Date</label>
+            <InputDate id="dueDate" @bind-Value="newTodo.DueDate"/>
+        </div>
+        <button type="submit">Save</button>
+    </EditForm>
+    <ul>
+        @foreach (var todo in TodoService.GetTodos())
+        {
+            <li>
+                <div>
+                    <h5>@todo.Title</h5>
+                    <p>@todo.Description</p>
+                    <b>@todo.DueDate.ToShortDateString()</b>
+                </div>
+                <div>
+                    <button @onclick="() => MakeAsCompleted(todo) ">Complete</button>
+                    <button @onclick="() => DeleteTodo(todo.Id)">Delete</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div> 
+
+@code
+{
+    // Use to create new todo
+    private TodoItem newTodo = new TodoItem();
+
+    // Handle create new todo
+    private void HandleSubmit()
+    {
+        TodoService.AddTodo(newTodo);   
+    }
+    private void MakeAsCompleted(TodoItem todo)
+    {
+        todo.IsCompleted = true;
+        TodoService.UpdateTodo(todo);
+    }
+
+    private void DeleteTodo(int id)
+    {
+        TodoService.RemoveTodo(id);
+    }
+}    

@@ -6,7 +6,7 @@ namespace BlazorTodoApp.Services
     {
         private List<TodoItem> Todos = [];
 
-        public IEnumerable<TodoItem> GetTodos => Todos;
+        public IEnumerable<TodoItem> GetTodos() => Todos;
 
         public void AddTodo(TodoItem newTodoItem)
         {
@@ -22,7 +22,7 @@ namespace BlazorTodoApp.Services
             {
                 existingTodo.Title = todo.Title;
                 existingTodo.Description = todo.Description;
-                existingTodo.IsDeleted = todo.IsDeleted;
+                existingTodo.IsCompleted = todo.IsCompleted;
                 existingTodo.DueDate = todo.DueDate;
             }
         }
