@@ -1,1 +1,10 @@
-Components/** linguist-documentation=false
+* text=auto eol=lf
+
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.razor diff=csharp
+
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore
