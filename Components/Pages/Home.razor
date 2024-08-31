@@ -8,24 +8,25 @@
 
 <div>
     <h1>Blazor Todo App</h1>
-    <EditForm Model="@newTodo">
+    <EditForm Model="@newTodo" OnValidSubmit="HandleSubmit" FormName="newTodoCreate">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
         <div>
             <label for="title">Title</label>
-            <InputText id="title" @bind-Value="newTodo.Title"/>
+            <InputText id="title" @bind-Value="newTodo.Title" />
         </div>
         <div>
             <label for="description">Description</label>
-            <InputTextArea id="description" @bind-Value="newTodo.Description"/>
+            <InputTextArea id="description" @bind-Value="newTodo.Description" />
         </div>
         <div>
             <label for="dueDate">Due Date</label>
-            <InputDate id="dueDate" @bind-Value="newTodo.DueDate"/>
+            <InputDate id="dueDate" @bind-Value="newTodo.DueDate" />
         </div>
         <button type="submit">Save</button>
     </EditForm>
+
     <ul>
         @foreach (var todo in TodoService.GetTodos())
         {
@@ -36,24 +37,23 @@
                     <b>@todo.DueDate.ToShortDateString()</b>
                 </div>
                 <div>
-                    <button @onclick="() => MakeAsCompleted(todo) ">Complete</button>
+                    <button @onclick="() => MakeAsCompleted(todo)">Complete</button>
                     <button @onclick="() => DeleteTodo(todo.Id)">Delete</button>
                 </div>
             </li>
         }
     </ul>
-</div> 
+</div>
 
-@code
-{
-    // Use to create new todo
+@code {
     private TodoItem newTodo = new TodoItem();
 
-    // Handle create new todo
     private void HandleSubmit()
     {
-        TodoService.AddTodo(newTodo);   
+        TodoService.AddTodo(newTodo);
+        newTodo = new TodoItem(); // Clear the form after submission
     }
+
     private void MakeAsCompleted(TodoItem todo)
     {
         todo.IsCompleted = true;
@@ -64,4 +64,4 @@
     {
         TodoService.RemoveTodo(id);
     }
-}    
+}
