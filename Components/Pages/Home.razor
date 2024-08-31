@@ -1,73 +1,42 @@
-﻿@using BlazorTodoApp.Models
-@using BlazorTodoApp.Services
+﻿@page "/"
 
-@page "/"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using BlazorTodoApp.Services
+@using BlazorTodoApp.Models
 @inject TodoService TodoService
 
 <PageTitle>Home</PageTitle>
 
-<div>
-    <h1>Blazor Todo App</h1>
-    <EditForm Model="this" OnValidSubmit="HandleSubmit" FormName="newTodoCreate">
-        <div>
-            <label for="title">Title</label>
-        </div>
-            <InputText id="title"  @bind-Value="Title" @bind:event="oninput"/>
-        <p>HERE : @Title</p>
-        <div>
-            <label for="description">Description</label>
-            <InputTextArea id="description" @bind-Value="Description"  />
-        </div>
-        <div>
-            <label for="dueDate">Due Date</label>
-            <InputDate id="dueDate" @bind-Value="DueDate" TValue="DateTime"/>
-        </div>
-        <button type="submit">Save</button>
-    </EditForm>
+<EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit">
+    <div>
+        <label for="">Title</label>
+        <InputText @bind-Value="newTodoItem.Title" />
+    </div>
+    <div>
+        <label for="">Description</label>
+        <InputTextArea @bind-Value="newTodoItem.Description" />
+    </div>
+    <div>
+        <label for="">Due Date</label>
+        <InputDate @bind-Value="newTodoItem.DueDate"/>
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
 
-    <ul>
-        @foreach (var todo in TodoService.GetTodos())
-        {
-            <li>
-                <div>
-                    <h5>@todo.Title</h5>
-                    <p>@todo.Description</p>
-                    <b>@todo.DueDate.ToShortDateString()</b>
-                </div>
-                <div>
-                    <button @onclick="() => MakeAsCompleted(todo)">Complete</button>
-                    <button @onclick="() => DeleteTodo(todo.Id)">Delete</button>
-                </div>
-            </li>
-        }
-    </ul>
-</div>
+<ul>
+    @foreach (var todo in TodoService.GetTodos())
+    {
+        <li>@todo.Title</li>
+    }
+</ul>
 
 @code {
-    string Title = "";
-    string Description = "";
-    DateTime DueDate = DateTime.Now;
-    private void HandleSubmit()
-    {
-        TodoItem newTodoItem = new TodoItem();
-        newTodoItem.Title = Title;
-        newTodoItem.Description = Description;
-        newTodoItem.DueDate = DueDate;
+   private TodoItem newTodoItem = new TodoItem();
 
+   private void HandleSubmit() {
         TodoService.AddTodo(newTodoItem);
-        Title = "";
-        Description = "";
-        DueDate = DateTime.Now;
-    }
 
-    private void MakeAsCompleted(TodoItem todo)
-    {
-        todo.IsCompleted = true;
-        TodoService.UpdateTodo(todo);
-    }
-
-    private void DeleteTodo(int id)
-    {
-        TodoService.RemoveTodo(id);
-    }
+        newTodoItem = new TodoItem();
+   }
 }

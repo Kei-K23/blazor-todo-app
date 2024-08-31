@@ -13,7 +13,7 @@ namespace BlazorTodoApp.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Due Date is required.")]
-        public DateTime DueDate { get; set; }
+        public DateTime DueDate { get; set; } = DateTime.Now;
 
         public bool IsCompleted { get; set; }
     }
