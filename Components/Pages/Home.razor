@@ -8,21 +8,19 @@
 
 <div>
     <h1>Blazor Todo App</h1>
-    <EditForm Model="@newTodo" OnValidSubmit="HandleSubmit" FormName="newTodoCreate">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
+    <EditForm Model="this" OnValidSubmit="HandleSubmit" FormName="newTodoCreate">
         <div>
             <label for="title">Title</label>
-            <InputText id="title" @bind-Value="newTodo.Title" />
         </div>
+            <InputText id="title"  @bind-Value="Title" @bind:event="oninput"/>
+        <p>HERE : @Title</p>
         <div>
             <label for="description">Description</label>
-            <InputTextArea id="description" @bind-Value="newTodo.Description" />
+            <InputTextArea id="description" @bind-Value="Description"  />
         </div>
         <div>
             <label for="dueDate">Due Date</label>
-            <InputDate id="dueDate" @bind-Value="newTodo.DueDate" />
+            <InputDate id="dueDate" @bind-Value="DueDate" TValue="DateTime"/>
         </div>
         <button type="submit">Save</button>
     </EditForm>
@@ -46,12 +44,20 @@
 </div>
 
 @code {
-    private TodoItem newTodo = new TodoItem();
-
+    string Title = "";
+    string Description = "";
+    DateTime DueDate = DateTime.Now;
     private void HandleSubmit()
     {
-        TodoService.AddTodo(newTodo);
-        newTodo = new TodoItem(); // Clear the form after submission
+        TodoItem newTodoItem = new TodoItem();
+        newTodoItem.Title = Title;
+        newTodoItem.Description = Description;
+        newTodoItem.DueDate = DueDate;
+
+        TodoService.AddTodo(newTodoItem);
+        Title = "";
+        Description = "";
+        DueDate = DateTime.Now;
     }
 
     private void MakeAsCompleted(TodoItem todo)
