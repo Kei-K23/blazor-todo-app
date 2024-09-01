@@ -8,35 +8,45 @@
 
 <PageTitle>Home</PageTitle>
 
-<EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit">
-    <div>
-        <label for="">Title</label>
-        <InputText @bind-Value="newTodoItem.Title" />
-    </div>
-    <div>
-        <label for="">Description</label>
-        <InputTextArea @bind-Value="newTodoItem.Description" />
-    </div>
-    <div>
-        <label for="">Due Date</label>
-        <InputDate @bind-Value="newTodoItem.DueDate"/>
-    </div>
-    <button type="submit">Submit</button>
-</EditForm>
+<div class="pt-10 px-7 md:px-10">
+    <h2 class="text-white text-3xl text-center">Blazor Todo App</h2>
+    <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit"
+        class="mt-10 max-w-[550px] mx-auto bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-6 py-3 pb-6">
+        <div class="flex flex-col gap-y-2 mb-3">
+            <label for="title" class="text-white">Title:</label>
+            <InputText id="title" @bind-Value="newTodoItem.Title" class="border py-1 px-3 rounded-lg" />
+        </div>
+        <div class="flex flex-col gap-y-2 mb-3">
+            <label for="description" class="text-white">Description:</label>
+            <InputTextArea id="description" @bind-Value="newTodoItem.Description" class="border py-1 px-3 rounded-lg" />
+        </div>
+        <div class="flex flex-col gap-y-2 mb-3">
+            <label for="dueDate" class="text-white">Due Date:</label>
+            <InputDate id="dueDate" @bind-Value="newTodoItem.DueDate" class="border py-1 px-3 rounded-lg" />
+        </div>
+        <button type="submit" class="bg-blue-500 text-white rounded-md border px-4 py-2">Submit</button>
+    </EditForm>
 
-<ul>
-    @foreach (var todo in TodoService.GetTodos())
-    {
-        <li>@todo.Title</li>
-    }
-</ul>
+    <ul>
+        @foreach (var todo in TodoService.GetTodos())
+        {
+            <li>
+                <div>
+                    <h3>@todo.Title</h3>
+                    <p>@todo.Description</p>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
 
 @code {
-   private TodoItem newTodoItem = new TodoItem();
+    private TodoItem newTodoItem = new TodoItem();
 
-   private void HandleSubmit() {
+    private void HandleSubmit()
+    {
         TodoService.AddTodo(newTodoItem);
 
         newTodoItem = new TodoItem();
-   }
+    }
 }
