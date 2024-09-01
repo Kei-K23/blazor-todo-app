@@ -1,0 +1,33 @@
+@using BlazorTodoApp.Models
+<li
+    class="text-white bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-4 py-2 flex justify-between transition-all hover:bg-blue-500/80">
+    <div>
+        <h3 class="mb-1">@Title</h3>
+        <span>Due date: @DueDate.ToShortDateString()</span>
+        <p class="pt-3">@Description</p>
+    </div>
+    <div class="space-x-2">
+        <button class="bg-blue-500 px-2 py-1 rounded-md">
+            <i class="fa fa-check"></i>
+        </button>
+        <button class="bg-emerald-500 px-2 py-1 rounded-md">
+            <i class="fa fa-pen"></i>
+        </button>
+        <button class="bg-rose-500 px-2 py-1 rounded-md">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>
+</li>
+
+@code
+{
+    [Parameter]
+    public required string Title { get; set; }
+
+    [Parameter]
+    public DateTime DueDate { get; set; }
+
+    [Parameter]
+    public required string Description { get; set; }
+
+}

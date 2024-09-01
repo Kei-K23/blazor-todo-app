@@ -10,47 +10,36 @@
 
 <div class="py-10 px-7 md:px-10">
     <h2 class="text-white text-3xl text-center">Blazor Todo App</h2>
-    <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit"
-        class="mt-10 max-w-[550px] mx-auto bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-6 py-3 pb-6">
-        <div class="flex flex-col gap-y-2 mb-3">
-            <label for="title" class="text-white">Title:</label>
-            <InputText id="title" @bind-Value="newTodoItem.Title" class="border py-1 px-3 rounded-lg" />
-        </div>
-        <div class="flex flex-col gap-y-2 mb-3">
-            <label for="description" class="text-white">Description:</label>
-            <InputTextArea id="description" @bind-Value="newTodoItem.Description" class="border py-1 px-3 rounded-lg" />
-        </div>
-        <div class="flex flex-col gap-y-2 mb-3">
-            <label for="dueDate" class="text-white">Due Date:</label>
-            <InputDate id="dueDate" @bind-Value="newTodoItem.DueDate" class="border py-1 px-3 rounded-lg" />
-        </div>
-        <button type="submit" class="bg-blue-500 text-white rounded-md border px-4 py-2">Submit</button>
-    </EditForm>
 
-    <ul class="mt-10 max-w-[550px] mx-auto space-y-3">
-        @foreach (var todo in TodoService.GetTodos())
-        {
-            <li
-                class="text-white bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-4 py-2 flex justify-between">
-                <div>
-                    <h3 class="mb-1">@todo.Title</h3>
-                    <span>Due date: @todo.DueDate.ToShortDateString()</span>
-                    <p class="pt-3">@todo.Description</p>
-                </div>
-                <div class="space-x-2">
-                    <button class="bg-blue-500 px-2 py-1 rounded-md">
-                        <i class="fa fa-check"></i>
-                    </button>
-                    <button class="bg-emerald-500 px-2 py-1 rounded-md">
-                        <i class="fa fa-pen"></i>
-                    </button>
-                    <button class="bg-rose-500 px-2 py-1 rounded-md">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-            </li>
-        }
-    </ul>
+    <div class="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-x-7">
+        <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit"
+            class="lg:sticky lg:top-[7.4rem] mt-10 w-full md:w-[450px] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-6 py-3 pb-6">
+            <div class="flex flex-col gap-y-2 mb-3">
+                <label for="title" class="text-white">Title:</label>
+                <InputText id="title" @bind-Value="newTodoItem.Title" class="border py-1 px-3 rounded-lg" />
+            </div>
+            <div class="flex flex-col gap-y-2 mb-3">
+                <label for="description" class="text-white">Description:</label>
+                <InputTextArea id="description" @bind-Value="newTodoItem.Description"
+                    class="border py-1 px-3 rounded-lg" />
+            </div>
+            <div class="flex flex-col gap-y-2 mb-3">
+                <label for="dueDate" class="text-white">Due Date:</label>
+                <InputDate id="dueDate" @bind-Value="newTodoItem.DueDate" class="border py-1 px-3 rounded-lg" />
+            </div>
+            <button type="submit" class="bg-blue-500 text-white rounded-md border px-4 py-2 mt-4">Submit</button>
+        </EditForm>
+
+        <div
+            class="lg:sticky lg:top-[7.4rem] mt-10 max-h-[700px] lg:max-h-[1000px] overflow-y-auto w-full md:w-[530px]">
+            <ul class=" w-full space-y-3 ">
+                @foreach (var todo in TodoService.GetTodos())
+                {
+                    <TodoItemComponent Title="@todo.Title" Description="@todo.Description" DueDate="@todo.DueDate" />
+                }
+            </ul>
+        </div>
+    </div>
 </div>
 
 @code {

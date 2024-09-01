@@ -8,3 +8,34 @@ body,
     height: 100%;
     background: rgb(35, 35, 35);
 }
+
+::-webkit-scrollbar {
+    width: 12px;
+    /* width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2);
+    /* Semi-transparent background */
+    backdrop-filter: blur(5px);
+    /* Apply blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    /* Apply blur effect for Safari */
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Optional: Add a subtle border for more definition */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #6b6b6b;
+    /* color of the scrollbar thumb */
+    border-radius: 20px;
+    /* roundness of the scrollbar thumb */
+    border: 0.5px solid #dcdcdc;
+    /* creates padding around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* color of the scrollbar thumb when hovered */
+}
