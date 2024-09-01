@@ -45,14 +45,24 @@
 
         <div
             class="lg:sticky lg:top-[7.4rem] mt-10 max-h-[700px] lg:max-h-[1000px] overflow-y-auto w-full md:w-[530px]">
-            <ul class=" w-full space-y-3 ">
-                @foreach (var todo in TodoService.GetTodos(Selected))
-                {
-                    <TodoItemComponent Id="@todo.Id" Title="@todo.Title" Description="@todo.Description"
-                        IsCompleted="@todo.IsCompleted" DueDate="@todo.DueDate" OnRemove="RemoveTodoItem"
-                        OnMakeAsComplete="MaskAsCompleteTodoItem" OnUpdateTodo="UpdateTodo" />
-                }
-            </ul>
+            @if (TodoService.GetTodos(Selected).Count() > 0)
+            {
+
+                <ul class=" w-full space-y-3 ">
+                    @foreach (var todo in TodoService.GetTodos(Selected))
+                    {
+                        <TodoItemComponent Id="@todo.Id" Title="@todo.Title" Description="@todo.Description"
+                            IsCompleted="@todo.IsCompleted" DueDate="@todo.DueDate" OnRemove="RemoveTodoItem"
+                            OnMakeAsComplete="MaskAsCompleteTodoItem" OnUpdateTodo="UpdateTodo" />
+                    }
+                </ul>
+            }
+            else
+            {
+                <div>
+                    <p class="text-2xl text-white text-center">No Todo List Here</p>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -63,6 +73,10 @@
 
     private void HandleSubmit()
     {
+        if (String.IsNullOrWhiteSpace(newTodoItem.Title) || String.IsNullOrWhiteSpace(newTodoItem.Description))
+        {
+            return;
+        }
         TodoService.AddTodo(newTodoItem);
 
         newTodoItem = new TodoItem();
