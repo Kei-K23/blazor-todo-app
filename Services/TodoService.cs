@@ -1,4 +1,6 @@
 using BlazorTodoApp.Models;
+using System.Collections.Generic;
+
 
 namespace BlazorTodoApp.Services
 {
@@ -7,25 +9,23 @@ namespace BlazorTodoApp.Services
         // Initialize the Todos list
         private List<TodoItem> Todos = new List<TodoItem>();
 
-        // Get all todos
-        public IEnumerable<TodoItem> GetTodos() => Todos;
+        // Get all todos, sorted by IsCompleted (completed items at the bottom)
+        public IEnumerable<TodoItem> GetTodos()
+        {
+            return Todos.OrderByDescending(t => !t.IsCompleted); // Incomplete items first
+        }
 
         // Add a new todo item
         public void AddTodo(TodoItem newTodoItem)
         {
-            // Assign a unique ID
             newTodoItem.Id = Todos.Count > 0 ? Todos.Max(t => t.Id) + 1 : 1;
-
-            // Add to the list
             Todos.Add(newTodoItem);
         }
-
 
         // Update an existing todo item
         public void UpdateTodo(TodoItem todo)
         {
             var existingTodo = Todos.Find(x => x.Id == todo.Id);
-
             if (existingTodo != null)
             {
                 existingTodo.Title = todo.Title;
@@ -34,11 +34,10 @@ namespace BlazorTodoApp.Services
             }
         }
 
-        // Update an existing todo item
+        // Mark an existing todo item as completed or incomplete
         public void MarkAsComplete(TodoItem todo)
         {
             var existingTodo = Todos.Find(x => x.Id == todo.Id);
-
             if (existingTodo != null)
             {
                 existingTodo.IsCompleted = !existingTodo.IsCompleted;

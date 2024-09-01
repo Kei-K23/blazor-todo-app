@@ -83,12 +83,13 @@
 
     private TodoItem newTodoItem = new TodoItem();
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         newTodoItem.Id = Id;
         newTodoItem.Title = Title;
         newTodoItem.Description = Description;
         newTodoItem.DueDate = DueDate;
+        newTodoItem.IsCompleted = IsCompleted;
     }
 
     private bool IsEdit { get; set; }
@@ -123,6 +124,7 @@
 
     private async Task MaskAsComplete()
     {
+        newTodoItem.IsCompleted = !newTodoItem.IsCompleted;
         await OnMakeAsComplete.InvokeAsync(newTodoItem);
     }
 
