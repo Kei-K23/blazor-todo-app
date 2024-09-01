@@ -1,6 +1,4 @@
 using BlazorTodoApp.Models;
-using System.Collections.Generic;
-
 
 namespace BlazorTodoApp.Services
 {
@@ -10,9 +8,19 @@ namespace BlazorTodoApp.Services
         private List<TodoItem> Todos = new List<TodoItem>();
 
         // Get all todos, sorted by IsCompleted (completed items at the bottom)
-        public IEnumerable<TodoItem> GetTodos()
+        public IEnumerable<TodoItem> GetTodos(char selected)
         {
-            return Todos.OrderByDescending(t => !t.IsCompleted); // Incomplete items first
+            switch (selected)
+            {
+                case 'A':
+                    return Todos.OrderByDescending(t => !t.IsCompleted); // Incomplete items first
+                case 'N':
+                    return [.. Todos.FindAll(t => !t.IsCompleted)];
+                case 'C':
+                    return [.. Todos.FindAll(t => t.IsCompleted)]; // Incomplete items first
+                default:
+                    return Todos.OrderByDescending(t => !t.IsCompleted); // Incomplete items first
+            }
         }
 
         // Add a new todo item

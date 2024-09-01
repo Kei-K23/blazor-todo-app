@@ -10,7 +10,20 @@
 
 <div class="py-10 px-7 md:px-10">
     <h2 class="text-white text-3xl text-center">Blazor Todo App</h2>
-
+    <div class="mt-8 mx-auto flex items-center justify-center gap-7 text-white">
+        <button @onclick="() => OnChangeSelected('A')"
+            class="px-4 py-2 rounded-md border hover:scale-110 transition-all @(Selected == 'A' ? "bg-blue-500/50" : "bg-transparent")">
+            All
+        </button>
+        <button @onclick="() => OnChangeSelected('N')"
+            class="px-4 py-2 rounded-md border hover:scale-110 transition-all @(Selected == 'N' ? "bg-blue-500/50" : "bg-transparent")">
+            Not Complete
+        </button>
+        <button @onclick="() => OnChangeSelected('C')"
+            class="px-4 py-2 rounded-md border hover:scale-110 transition-all @(Selected == 'C' ? "bg-blue-500/50" : "bg-transparent")">
+            Completed
+        </button>
+    </div>
     <div class="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-x-7">
         <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit"
             class="lg:sticky lg:top-[7.4rem] mt-10 w-full md:w-[450px] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-6 py-3 pb-6">
@@ -33,7 +46,7 @@
         <div
             class="lg:sticky lg:top-[7.4rem] mt-10 max-h-[700px] lg:max-h-[1000px] overflow-y-auto w-full md:w-[530px]">
             <ul class=" w-full space-y-3 ">
-                @foreach (var todo in TodoService.GetTodos())
+                @foreach (var todo in TodoService.GetTodos(Selected))
                 {
                     <TodoItemComponent Id="@todo.Id" Title="@todo.Title" Description="@todo.Description"
                         IsCompleted="@todo.IsCompleted" DueDate="@todo.DueDate" OnRemove="RemoveTodoItem"
@@ -45,6 +58,7 @@
 </div>
 
 @code {
+    private char Selected = 'A';
     private TodoItem newTodoItem = new TodoItem();
 
     private void HandleSubmit()
@@ -70,6 +84,12 @@
     private void UpdateTodo(TodoItem todo)
     {
         TodoService.UpdateTodo(todo);
+        StateHasChanged();
+    }
+
+    private void OnChangeSelected(char value)
+    {
+        Selected = value;
         StateHasChanged();
     }
 }
