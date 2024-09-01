@@ -3,27 +3,96 @@
 @inject TodoService TodoService
 
 <li
-    class="text-white bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-4 py-3 flex justify-between transition-all hover:bg-blue-500/80">
-    <div>
-        <h3 class="mb-1">@Title</h3>
-        <span>Due date: @DueDate.ToShortDateString()</span>
-        <p class="pt-3">@Description</p>
-    </div>
-    <div class="space-x-2">
-        <button class="bg-blue-500 px-2 py-1 rounded-md">
-            <i class="fa fa-check"></i>
-        </button>
-        <button class="bg-emerald-500 px-2 py-1 rounded-md">
-            <i class="fa fa-pen"></i>
-        </button>
-        <button @onclick="RemoveItem" class="bg-rose-500 px-2 py-1 rounded-md">
-            <i class="fa fa-trash"></i>
-        </button>
-    </div>
+    class="text-white bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-4 py-3 flex justify-between transition-all ">
+
+    @if (IsEdit)
+    {
+        <div class="w-full">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-center text-lg">Editing the Todo with Id : @Id</h3>
+                <button @onclick="() => IsEdit = false" class="bg-rose-500 px-2 py-1 rounded-md">
+                    <i class="fa fa-x"></i>
+                </button>
+            </div>
+            <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit" class="w-full ">
+                <div class="flex flex-col gap-y-2 mb-3 w-full">
+                    <label for="title" class="text-white">Title:</label>
+                    <InputText id="title" @bind-Value="newTodoItem.Title" class="border py-1 px-3 rounded-lg text-black" />
+                </div>
+                <div class="flex flex-col gap-y-2 mb-3">
+                    <label for="description" class="text-white">Description:</label>
+                    <InputTextArea id="description" @bind-Value="newTodoItem.Description"
+                        class="border py-1 px-3 rounded-lg text-black" />
+                </div>
+                <div class="flex flex-col gap-y-2 mb-3">
+                    <label for="dueDate" class="text-white">Due Date:</label>
+                    <InputDate id="dueDate" @bind-Value="newTodoItem.DueDate"
+                        class="border py-1 px-3 rounded-lg text-black" />
+                </div>
+                <button type="submit" class="bg-blue-500 text-white rounded-md border px-4 py-2 mt-4">Save</button>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div>
+            <div class="flex items-center gap-4">
+                @if (IsCompleted)
+                {
+                    <h3 class="mb-1 text-xl font-bold line-through text-neutral-300">@Title</h3>
+                }
+                else
+                {
+                    <h3 class="mb-1 text-xl font-bold">@Title</h3>
+
+                }
+                @if (IsCompleted)
+                {
+                    <i class="fa fa-check text-lg text-blue-500"></i>
+                }
+            </div>
+            <span>Due date: @DueDate.ToShortDateString()</span>
+            <p class="pt-3 text-lg">@Description</p>
+        </div>
+        <div class="space-x-2">
+        @if (IsCompleted)
+            {
+                <button @onclick="MaskAsComplete" class="bg-yellow-500 px-2 py-1 rounded-md">
+                    <i class="fa fa-x"></i>
+                </button>
+            }
+            else
+            {
+                <button @onclick="MaskAsComplete" class="bg-blue-500 px-2 py-1 rounded-md">
+                    <i class="fa fa-check"></i>
+                </button>
+            }
+            <button @onclick="() => IsEdit = true" class="bg-emerald-500 px-2 py-1 rounded-md">
+                <i class="fa fa-pen"></i>
+            </button>
+            <button @onclick="RemoveItem" class="bg-rose-500 px-2 py-1 rounded-md">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    }
+
 </li>
 
 @code
 {
+
+    private TodoItem newTodoItem = new TodoItem();
+
+    protected override void OnInitialized()
+    {
+        newTodoItem.Id = Id;
+        newTodoItem.Title = Title;
+        newTodoItem.Description = Description;
+        newTodoItem.DueDate = DueDate;
+    }
+
+    private bool IsEdit { get; set; }
+
     [Parameter]
     public required int Id { get; set; }
     [Parameter]
@@ -36,11 +105,30 @@
     public required string Description { get; set; }
 
     [Parameter]
+    public bool IsCompleted { get; set; }
+
+    [Parameter]
     public EventCallback<int> OnRemove { get; set; }
+
+    [Parameter]
+    public EventCallback<TodoItem> OnMakeAsComplete { get; set; }
+
+    [Parameter]
+    public EventCallback<TodoItem> OnUpdateTodo { get; set; }
 
     private async Task RemoveItem()
     {
         await OnRemove.InvokeAsync(Id);
     }
 
+    private async Task MaskAsComplete()
+    {
+        await OnMakeAsComplete.InvokeAsync(newTodoItem);
+    }
+
+    private async Task HandleSubmit()
+    {
+        await OnUpdateTodo.InvokeAsync(newTodoItem);
+        IsEdit = false;
+    }
 }

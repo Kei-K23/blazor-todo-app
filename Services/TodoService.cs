@@ -13,23 +13,11 @@ namespace BlazorTodoApp.Services
         // Add a new todo item
         public void AddTodo(TodoItem newTodoItem)
         {
-            // Print the values before adding to the list
-            Console.WriteLine("Title: " + newTodoItem.Title);
-            Console.WriteLine("Description: " + newTodoItem.Description);
-            Console.WriteLine("DueDate: " + newTodoItem.DueDate);
-
             // Assign a unique ID
             newTodoItem.Id = Todos.Count > 0 ? Todos.Max(t => t.Id) + 1 : 1;
 
             // Add to the list
             Todos.Add(newTodoItem);
-
-            // Print the entire list to confirm it was added
-            Console.WriteLine("Todos List:");
-            foreach (var todo in Todos)
-            {
-                Console.WriteLine($"ID: {todo.Id}, Title: {todo.Title}, Description: {todo.Description}, DueDate: {todo.DueDate}, Completed: {todo.IsCompleted}");
-            }
         }
 
 
@@ -42,8 +30,18 @@ namespace BlazorTodoApp.Services
             {
                 existingTodo.Title = todo.Title;
                 existingTodo.Description = todo.Description;
-                existingTodo.IsCompleted = todo.IsCompleted;
                 existingTodo.DueDate = todo.DueDate;
+            }
+        }
+
+        // Update an existing todo item
+        public void MarkAsComplete(TodoItem todo)
+        {
+            var existingTodo = Todos.Find(x => x.Id == todo.Id);
+
+            if (existingTodo != null)
+            {
+                existingTodo.IsCompleted = !existingTodo.IsCompleted;
             }
         }
 

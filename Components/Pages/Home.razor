@@ -36,7 +36,8 @@
                 @foreach (var todo in TodoService.GetTodos())
                 {
                     <TodoItemComponent Id="@todo.Id" Title="@todo.Title" Description="@todo.Description"
-                        DueDate="@todo.DueDate" OnRemove="RemoveTodoItem" />
+                        IsCompleted="@todo.IsCompleted" DueDate="@todo.DueDate" OnRemove="RemoveTodoItem"
+                        OnMakeAsComplete="MaskAsCompleteTodoItem" OnUpdateTodo="UpdateTodo" />
                 }
             </ul>
         </div>
@@ -53,11 +54,22 @@
         newTodoItem = new TodoItem();
     }
 
-
     private void RemoveTodoItem(int id)
     {
         TodoService.RemoveTodo(id);
         // Refresh the list by triggering a re-render
+        StateHasChanged();
+    }
+
+    private void MaskAsCompleteTodoItem(TodoItem todo)
+    {
+        TodoService.MarkAsComplete(todo);
+        StateHasChanged();
+    }
+
+    private void UpdateTodo(TodoItem todo)
+    {
+        TodoService.UpdateTodo(todo);
         StateHasChanged();
     }
 }
