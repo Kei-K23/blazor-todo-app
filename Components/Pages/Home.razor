@@ -35,7 +35,8 @@
             <ul class=" w-full space-y-3 ">
                 @foreach (var todo in TodoService.GetTodos())
                 {
-                    <TodoItemComponent Title="@todo.Title" Description="@todo.Description" DueDate="@todo.DueDate" />
+                    <TodoItemComponent Id="@todo.Id" Title="@todo.Title" Description="@todo.Description"
+                        DueDate="@todo.DueDate" OnRemove="RemoveTodoItem" />
                 }
             </ul>
         </div>
@@ -50,5 +51,13 @@
         TodoService.AddTodo(newTodoItem);
 
         newTodoItem = new TodoItem();
+    }
+
+
+    private void RemoveTodoItem(int id)
+    {
+        TodoService.RemoveTodo(id);
+        // Refresh the list by triggering a re-render
+        StateHasChanged();
     }
 }
