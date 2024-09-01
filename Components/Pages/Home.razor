@@ -8,7 +8,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="pt-10 px-7 md:px-10">
+<div class="py-10 px-7 md:px-10">
     <h2 class="text-white text-3xl text-center">Blazor Todo App</h2>
     <EditForm Model="newTodoItem" OnValidSubmit="HandleSubmit"
         class="mt-10 max-w-[550px] mx-auto bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-6 py-3 pb-6">
@@ -27,13 +27,26 @@
         <button type="submit" class="bg-blue-500 text-white rounded-md border px-4 py-2">Submit</button>
     </EditForm>
 
-    <ul>
+    <ul class="mt-10 max-w-[550px] mx-auto space-y-3">
         @foreach (var todo in TodoService.GetTodos())
         {
-            <li>
+            <li
+                class="text-white bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 px-4 py-2 flex justify-between">
                 <div>
-                    <h3>@todo.Title</h3>
-                    <p>@todo.Description</p>
+                    <h3 class="mb-1">@todo.Title</h3>
+                    <span>Due date: @todo.DueDate.ToShortDateString()</span>
+                    <p class="pt-3">@todo.Description</p>
+                </div>
+                <div class="space-x-2">
+                    <button class="bg-blue-500 px-2 py-1 rounded-md">
+                        <i class="fa fa-check"></i>
+                    </button>
+                    <button class="bg-emerald-500 px-2 py-1 rounded-md">
+                        <i class="fa fa-pen"></i>
+                    </button>
+                    <button class="bg-rose-500 px-2 py-1 rounded-md">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </div>
             </li>
         }
